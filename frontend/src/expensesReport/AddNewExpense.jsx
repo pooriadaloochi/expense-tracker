@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Grid,
+  IconButton,
   MenuItem,
   Paper,
   Snackbar,
@@ -11,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from "react";
+import { CloseIcon } from "../assets/icons/CloseIcon";
 import NumberFormatTextField from "./NumberFormatTextField";
 
 const ALL_CATEGORIES = [
@@ -22,7 +24,7 @@ const ALL_CATEGORIES = [
   "خانه",
 ];
 
-export default function AddNewExpense({ onSubmit }) {
+export default function AddNewExpense({ onSubmit, onClose }) {
   const [values, setValues] = React.useState({
     category: "",
     amount: "",
@@ -38,7 +40,6 @@ export default function AddNewExpense({ onSubmit }) {
 
   const handleChange = (field) => (e) => {
     setValues((v) => ({ ...v, [field]: e.target.value }));
-    // Clear field error on change
     setErrors((er) => ({ ...er, [field]: undefined }));
   };
 
@@ -64,7 +65,6 @@ export default function AddNewExpense({ onSubmit }) {
       submittedAt: new Date().toISOString(),
     };
 
-    // Hook to your backend here
     try {
       if (typeof onSubmit === "function") {
         onSubmit(payload);
@@ -72,8 +72,6 @@ export default function AddNewExpense({ onSubmit }) {
         console.log("Expense payload →", payload);
       }
       setToast({ open: true, msg: "Expense submitted!", severity: "success" });
-      // optional: clear form
-      // setValues({ ...initial })
     } catch (err) {
       console.error(err);
       setToast({
@@ -100,8 +98,26 @@ export default function AddNewExpense({ onSubmit }) {
     >
       <Paper
         elevation={3}
-        sx={{ p: { xs: 2, sm: 3 }, width: "100%", maxWidth: 760 }}
+        sx={{
+          p: { xs: 2, sm: 3 },
+          width: "100%",
+          maxWidth: 760,
+          position: "relative",
+        }}
       >
+        {/* X Button for Closing */}
+        <IconButton
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            top: 8,
+            left: 8,
+          }}
+          size="small"
+        >
+          <CloseIcon />
+        </IconButton>
+
         <form onSubmit={handleSubmit} noValidate>
           <Stack spacing={2}>
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -130,22 +146,8 @@ export default function AddNewExpense({ onSubmit }) {
                   ))}
                 </TextField>
               </Grid>
+
               <Grid item width="100%">
-                {/* <TextField
-                  label="مبلغ *"
-                  fullWidth
-                  type="number"
-                  name="amount"
-                  value={values.amount}
-                  onChange={handleChange("amount")}
-                  error={Boolean(errors.amount)}
-                  helperText={errors.amount}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">ریال</InputAdornment>
-                    ),
-                  }}
-                /> */}
                 <NumberFormatTextField
                   label="مبلغ *"
                   name="amount"
@@ -155,6 +157,7 @@ export default function AddNewExpense({ onSubmit }) {
                   helperText={errors.amount}
                 />
               </Grid>
+
               <Grid item width="100%">
                 <TextField
                   label="توضیحات"
@@ -166,6 +169,7 @@ export default function AddNewExpense({ onSubmit }) {
                   onChange={handleChange("description")}
                 />
               </Grid>
+
               <Grid item width="100%">
                 <TextField
                   label="تاریخ *"
@@ -176,23 +180,27 @@ export default function AddNewExpense({ onSubmit }) {
                   onChange={handleChange("date")}
                   error={Boolean(errors.date)}
                   helperText={errors.date}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
             </Grid>
 
+            {/* Buttons */}
             <Stack
               direction={{ xs: "column", sm: "row" }}
-              spacing={1}
-              justifyContent="flex-end"
+              gap={3}
+              justifyContent="flex-start"
             >
-              <Button variant="text" onClick={handleReset}>
-                پاک کردن فرم
-              </Button>
               <Button variant="contained" type="submit">
                 ثبت هزینه
+              </Button>
+
+              <Button variant="contained" onClick={handleReset}>
+                پاک کردن فرم
+              </Button>
+
+              <Button variant="contained" color="error" onClick={onClose}>
+                انصراف
               </Button>
             </Stack>
           </Stack>

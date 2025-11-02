@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@fontsource/vazir": "^4.5.4",
     "@mui/material": "^7.3.4",
     "@mui/stylis-plugin-rtl": "^7.3.3",
     "@mui/x-charts": "^8.16.0",

@@ -1,10 +1,11 @@
 import { Button, Modal, Popover, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
+import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { fetchJSON } from "../api";
 import AddNewExpense from "./AddNewExpense";
-import { fetchJSON } from "./api";
+import ExpenseTable from "./ExpenseTable";
 import Summary from "./Summary";
 
 export default function ExpensesDataGrid() {
@@ -87,7 +88,8 @@ export default function ExpensesDataGrid() {
     <Paper
       sx={{
         width: "100%",
-        height: "100dvh",
+        height: "97dvh",
+        overflow: "hidden",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
@@ -128,7 +130,10 @@ export default function ExpensesDataGrid() {
             onClose={() => setOpen(false)}
             closeAfterTransition
           >
-            <AddNewExpense onSubmit={handleSubmit} />
+            <AddNewExpense
+              onSubmit={handleSubmit}
+              onClose={() => setOpen(false)}
+            />
           </Modal>
           <Popover
             open={openPopover}
@@ -165,8 +170,8 @@ export default function ExpensesDataGrid() {
             </Stack>
           </Popover>
         </Stack>
-        <DataGrid
-          ref={anchorEl}
+        <ExpenseTable rows={rows} columns={columns} />
+        {/* <DataGrid
           style={{
             marginTop: "20px",
             width: "100%",
@@ -187,7 +192,7 @@ export default function ExpensesDataGrid() {
             },
             direction: "ltr",
           }}
-        />
+        /> */}
       </Stack>
     </Paper>
   );

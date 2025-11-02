@@ -1352,6 +1352,11 @@
   resolved "https://registry.npmjs.org/@eslint/js/-/js-8.57.1.tgz"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
+"@fontsource/vazir@^4.5.4":
+  version "4.5.4"
+  resolved "https://registry.npmjs.org/@fontsource/vazir/-/vazir-4.5.4.tgz"
+  integrity sha512-PnQwwPf9JDnCHHLx55c9QHBfPSQY4VOqhGTTQ0jUkAAJOW66gE6aCOKZGGANd5e3u95LGXEzzt6E0GZXVUv0cg==
+
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.13.0.tgz"
