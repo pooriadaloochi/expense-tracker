@@ -18,11 +18,19 @@ export default function Summary({ rows }) {
     getSummary();
   }, [getSummary]);
 
-  // محاسبه مجموع کل هزینه‌ها
   const total =
     summary && Object.values(summary).length > 0
       ? Object.values(summary).reduce((acc, val) => acc + Number(val), 0)
       : 0;
+
+  const chartData =
+    summary && total > 0
+      ? Object.entries(summary).map(([cat, sum], index) => ({
+          id: index,
+          value: sum,
+          label: `${cat} (${((sum / total) * 100).toFixed(1)}%)`,
+        }))
+      : [];
 
   return (
     <Stack spacing={2} sx={{ width: "100%", margin: "40px auto" }}>
@@ -37,27 +45,28 @@ export default function Summary({ rows }) {
       <PieChart
         series={[
           {
-            data: summary
-              ? Object.entries(summary).map(([cat, sum], index) => ({
-                  id: index,
-                  value: sum,
-                  label: cat,
-                }))
-              : [],
+            data: chartData,
+            arcLabel: (item) => `${((item.value / total) * 100).toFixed(1)}%`,
+            arcLabelMinAngle: 10,
           },
         ]}
-        width={300}
-        height={300}
+        width={360}
+        height={360}
       />
 
-      {/* بخش نمایش مقادیر عددی زیر چارت */}
       {summary && (
         <Stack spacing={1} sx={{ textAlign: "center", mt: 2 }}>
-          {Object.entries(summary).map(([category, amount]) => (
-            <Typography key={category} variant="body1">
-              {category}: <strong>{amount.toLocaleString()} ریال</strong>
-            </Typography>
-          ))}
+          {Object.entries(summary).map(([category, amount]) => {
+            const percent = ((amount / total) * 100).toFixed(1);
+            return (
+              <Typography key={category} variant="body1">
+                <span style={{ color: "#888", marginRight: "1rem" }}>
+                  {percent}%
+                </span>
+                {category}: <strong>{amount.toLocaleString()} ریال</strong> —{" "}
+              </Typography>
+            );
+          })}
 
           <Typography
             variant="h6"
