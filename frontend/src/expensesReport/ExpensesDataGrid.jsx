@@ -47,9 +47,12 @@ export default function ExpensesDataGrid() {
       field: "amount",
       headerName: "مبلغ",
       width: 100,
-      flex: 1,
+      flex: 1.5,
       minWidth: 100,
-      renderCell: (params) => Number(params.value).toLocaleString("fa-IR"),
+      renderCell: (params) => {
+        const amount = Number(params.value).toLocaleString("fa-IR");
+        return `${amount} ریال`;
+      },
     },
     { field: "description", headerName: "توضیحات", flex: 3, minWidth: 150 },
     { field: "date", headerName: "تاریخ", flex: 1.5, minWidth: 120 },
@@ -95,105 +98,80 @@ export default function ExpensesDataGrid() {
         alignItems: "center",
         paddingTop: "20px",
         spacing: 2,
+        gap: 2,
       }}
     >
-      <Stack sx={{ width: "35%" }}>
+      <Stack
+        sx={{
+          width: "35%",
+          boxShadow: 2,
+          border: 1,
+          borderRadius: 2,
+          borderColor: "#e0e0e0",
+        }}
+      >
         <Summary rows={rows} />
       </Stack>
       <Stack
         sx={{
           width: "65%",
-          gap: 2,
+          height: "91dvh",
           padding: "20px",
           marginLeft: "20px",
           borderRadius: 2,
           boxShadow: 2,
           border: "1px solid #e0e0e0",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "end",
         }}
       >
-        <Stack
-          spacing={2}
-          sx={{ width: "100%" }}
-          justifyContent="flex-end"
-          display="flex"
-          direction="row"
+        <Button
+          onClick={() => setOpen(true)}
+          variant="contained"
+          sx={{ width: "200px", height: "40px" }}
         >
-          <Button
-            onClick={() => setOpen(true)}
-            variant="contained"
-            sx={{ width: "200px", marginBottom: "100px" }}
-          >
-            اضافه هزینه جدید
-          </Button>
-          <Modal
-            open={open}
-            onClose={() => setOpen(false)}
-            closeAfterTransition
-          >
-            <AddNewExpense
-              onSubmit={handleSubmit}
-              onClose={() => setOpen(false)}
-            />
-          </Modal>
-          <Popover
-            open={openPopover}
-            anchorEl={anchorEl}
-            onClose={() => {
-              deleteId.current = null;
-              setOpenPopover(false);
-            }}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-          >
-            <Typography sx={{ p: 2 }}>
-              آیا از حذف این مورد مطمئن هستید؟
-            </Typography>
-            <Stack
-              direction="row"
-              spacing={2}
-              sx={{ p: 2 }}
-              display="flex"
-              justifyContent="space-between"
-            >
-              <Button variant="contained" color="error" onClick={deleteUser}>
-                حذف
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => setOpenPopover(false)}
-                sx={{ marginRight: "auto" }}
-              >
-                انصراف
-              </Button>
-            </Stack>
-          </Popover>
-        </Stack>
+          اضافه هزینه جدید
+        </Button>
+
         <ExpenseTable rows={rows} columns={columns} />
-        {/* <DataGrid
-          style={{
-            marginTop: "20px",
-            width: "100%",
-            height: 700,
-            margin: "auto",
-          }}
-          rows={rows}
-          columns={columns}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
-          sx={{
-            boxShadow: 2,
-            border: 2,
-            borderRadius: 2,
-            borderColor: "#e0e0e0",
-            "& .MuiDataGrid-cell:hover": {
-              color: "#f5f5f5",
-            },
-            direction: "ltr",
-          }}
-        /> */}
       </Stack>
+
+      <Modal open={open} onClose={() => setOpen(false)} closeAfterTransition>
+        <AddNewExpense onSubmit={handleSubmit} onClose={() => setOpen(false)} />
+      </Modal>
+      <Popover
+        open={openPopover}
+        anchorEl={anchorEl}
+        onClose={() => {
+          deleteId.current = null;
+          setOpenPopover(false);
+        }}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <Typography sx={{ p: 2 }}>آیا از حذف این مورد مطمئن هستید؟</Typography>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ p: 2 }}
+          display="flex"
+          justifyContent="space-between"
+        >
+          <Button variant="contained" color="error" onClick={deleteUser}>
+            حذف
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => setOpenPopover(false)}
+            sx={{ marginRight: "auto" }}
+          >
+            انصراف
+          </Button>
+        </Stack>
+      </Popover>
     </Paper>
   );
 }

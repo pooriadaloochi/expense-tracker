@@ -12,14 +12,17 @@ export default function ExpenseTable({ rows, columns }) {
     <Box sx={{ width: "100%", mt: 2 }}>
       <DataGrid
         style={{
-          marginTop: "20px",
+          marginTop: "10px",
           width: "100%",
-          height: 550,
-          margin: "auto",
+          height: "85%",
+          // margin: "auto",
         }}
         rows={rows}
         columns={columns}
-        pageSizeOptions={[5, 10]}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 5 } },
+        }}
+        pageSizeOptions={[3, 10]}
         checkboxSelection
         sx={{
           boxShadow: 2,
